@@ -32,6 +32,7 @@
 
 (digit_adder "1231")
 (digit_adder (str (reduce *' (range 1 101))))
+;=> 648
 
 ;;;;;; MISC
 (count "122")
