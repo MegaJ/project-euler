@@ -11,23 +11,39 @@
 (defn prime?
   "Single argument, checks if n is prime"
   [n]
-  (if (< n 0)
-    (println "Primes cannot be positive by definition.")
-    (if (= n 2)
-      true
-      (if (= 0 (mod n 2))
-        false
-        (do
-          (def checkUntil (int (Math/round (Math/sqrt n))))
-          (apply #(mod n %) (range 3 checkUntil 2)))))))
+  (cond
+   (< n 2) false ;; no primes less than 2 exist
+   (= n 2) true
+   (= 0 (mod n 2)) false
+   :else (let [check_until (+ (int (Math/round (Math/sqrt n))) 1)]
+           (every? #(not= 0 %) (map #(mod n %) (range 3 check_until 2))))))
+
+;; apparently apply is bad? It takes in a collection as a huge set of arguments.
+;;           (apply #(mod n %) (range 3 checkUntil 2)))))))
 
 
-  (defn countUntilNthPrime [n]
-    (def accumulator [])
+(defn find_nth_prime [n]
+  (cond (<= n 0) "Not a valid value"
+        (= n 1) 2
+        :else (loop [current_num 3
+                     number_of_primes 1]
+                (if (not= number_of_primes n)
+                  (if (prime? current_num)
+                    (recur (+ current_num 2)
+                           (+ number_of_primes 1))
+                    (recur (+ current_num 2)
+                           number_of_primes))
+                  (- current_num 2)))))
+
+
+
+    ;; use (prime? on every odd number until )
     ;; I wish I knew how to use for loops in Clojure,
     ;; this would be so easy.
-    )
 
+
+(find_nth_prime 10001)
+(prime? 9)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MISC NOTES ;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -39,6 +55,4 @@
 ;; (defn prime? [n]
 ;;          (not-any? zero? (map #(rem n %) (range 2 n))))
 
-(prime? 91)
-
-(def checkUntil (int (Math/round (Math/sqrt n))))
+(prime? 101)
