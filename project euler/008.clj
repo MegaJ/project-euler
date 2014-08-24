@@ -25,10 +25,6 @@
 
 (use 'clojure.string)
 
-(get (split bignum #"\n") 20)
-(= nil 1)
-
-
 (defn digit_multiplier [str]
   (let [str_sq (seq str)] ;; turn string into sequence first
 ;;     (println str_sq)
@@ -39,8 +35,96 @@
                (* accumulator (- (int (first str_sq)) 48)))
         accumulator))))
 
+(defn all_subs
+  [string
+   subs_len]
+
+  (loop [start 0
+         end (+ start subs_len)
+         substrings []]
+    (if-not (> end (count string))
+      (recur (inc start)
+             (inc end)
+             (conj substrings (subs string start end)))
+      substrings)))
+
+(defn all_subs_prod
+
+  [string
+   subs_len]
+
+  (loop [start 0
+         end (+ start subs_len)
+         subs_prods []]
+    (if-not (> end (count string))
+      (recur (inc start)
+             (inc end)
+             (conj subs_prods (digit_multiplier (subs string start end))))
+      subs_prods)))
+
+(all_subs_prod "73167176531330624919225119674426574742355349194934" 13)
+
+(defn split_nl [string]
+  (split string #"\n"))
+
+(count (split_nl bignum))
+
+(sort > (flatten (let [rows (split_nl bignum)]
+  (loop [cur_row_num 0
+         products_list []]
+    (if (not= (get rows cur_row_num) nil)
+      (recur (inc cur_row_num)
+             (conj products_list (all_subs_prod (get rows cur_row_num) 13)))
+      products_list)))))
+
+(get [1 2 3] 2)
+
+(if (> (digit_multiplier (subs current_row start end)) max_product)
+
+(all_subs "73167176531330624919225119674426574742355349194934" 13)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (digit_multiplier "23475")
+
+
+(defn []
+  (loop [start 0
+         end (+ start multicand_size)
+         max_product 0]
+    (if-not (> end row_size)
+      (if (> (digit_multiplier (subs current_row start end)) max_product)
+        (do
+          (println "This is the current subsequence: " (subs current_row start end))
+          (recur (inc start)
+                 (inc end)
+                 (digit_multiplier (subs current_row start end))))
+
+        (do
+          (println "This is the current subsequence: " (subs current_row start end))
+          (recur (inc start)
+                 (inc end)
+                 max_product)))
+      max_product)))
 
 ;; I can't be doing Clojure right...this is just really hard to read....
 
