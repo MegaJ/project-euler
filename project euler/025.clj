@@ -4,18 +4,23 @@
 ;;and probably chunk some of the digits of the fib sequence
 ;; into a collection,
 ;; then spit them out through concatonation
-;; (use 'clojure.contrib.math)
+;; (require 'clojure.contrib.math)
 
 (defn exp [x n]
-  (reduce * (repeat n x)))
+  (reduce * (repeat (bigdec n) x)))
 
 (exp 2 3)
+(exp (/ (+ 1 (Math/sqrt 5)) 2) 1500)
+
+(- Infinity Infinity)
 
 (defn nth_fibonacci_cform
   [n]
   (let [phi (/ (+ 1 (Math/sqrt 5)) 2)
         psi (/ (- 1 (Math/sqrt 5)) 2)]
-    (/ (- (/ (exp phi n) 100000) (exp psi n)) (Math/sqrt 5) 1000)))
+    (/ (- (exp phi n) (exp psi n)) (Math/sqrt 5))))
 
 
-(nth_fibonacci_cform 2000)
+(nth_fibonacci_cform 1400)
+
+(repeat 5 3)
