@@ -23,31 +23,6 @@
 
 ;; 50r, 20c
 
-(use 'clojure.string)
-
-(defn digit_multiplier [str]
-  (let [str_sq (seq str)] ;; turn string into sequence first
-;;     (println str_sq)
-    (loop [str_sq str_sq
-           accumulator 1]
-      (if (not= (count str_sq) 0)
-        (recur (rest str_sq)
-               (* accumulator (- (int (first str_sq)) 48)))
-        accumulator))))
-
-(defn all_subs
-  [string
-   subs_len]
-
-  (loop [start 0
-         end (+ start subs_len)
-         substrings []]
-    (if-not (> end (count string))
-      (recur (inc start)
-             (inc end)
-             (conj substrings (subs string start end)))
-      substrings)))
-
 (defn all_subs_prod
 
   [string
@@ -61,6 +36,40 @@
              (inc end)
              (conj subs_prods (digit_multiplier (subs string start end))))
       subs_prods)))
+
+(defn digit_multiplier [str]
+  (let [str_sq (seq str)] ;; turn string into sequence first
+;;     (println str_sq)
+    (loop [str_sq str_sq
+           accumulator 1]
+      (if (not= (count str_sq) 0)
+        (recur (rest str_sq)
+               (* accumulator (- (int (first str_sq)) 48)))
+        accumulator))))
+
+(use 'clojure.string)
+
+(join (split bignum #"\n"))
+
+(sort > (all_subs_prod (join (split bignum #"\n")) 13))
+; => 23514624000 is the first entry
+
+
+;;;;;;;;;;;;;;;;; MISC
+(defn all_subs
+  [string
+   subs_len]
+
+  (loop [start 0
+         end (+ start subs_len)
+         substrings []]
+    (if-not (> end (count string))
+      (recur (inc start)
+             (inc end)
+             (conj substrings (subs string start end)))
+      substrings)))
+
+
 
 (all_subs_prod "73167176531330624919225119674426574742355349194934" 13)
 
