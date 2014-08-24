@@ -27,7 +27,11 @@
 
 
 (num_palindrome? 9999999)
-(sort > (palindromes_up_to 998001))
+(def pali_array (sort > (palindromes_up_to 998001)))
+
+;; Okay, I have a list of all the palindromes up to 998001,
+;; I just need to determine if a palindrome has a factor which is a 3 digit number
+
 
 
 (defn factor? [num1 num2]
