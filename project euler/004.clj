@@ -32,13 +32,16 @@
 ;; Okay, I have a list of all the palindromes up to 998001,
 ;; I just need to determine if a palindrome has a factor which is a 3 digit number
 
-
+(defn find_divisors [n]
+  )
 
 (defn factor? [num1 num2]
   (= 0 (rem num1 num2)))
 
 (factor? 999 3)
 
+
+;;;;;;;;;;;;;; MISC
 (str 91)
 
 (count "91")
