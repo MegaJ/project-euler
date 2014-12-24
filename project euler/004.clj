@@ -1,56 +1,51 @@
-(defn num_palindrome? [n]
-  (cond (even? n)
-          (let [first_half (reverse (take (/ (count (str n)) 2) (seq (str n))))
-                second_half (take-last (/ (count (str n)) 2) (seq (str n)))]
-            (if (= first_half second_half)
-              true
-              false))
-        :else
-          (let [middle (+ (int (Math/floor (/ n 2))) 1)
-                first_half (reverse (take middle (seq (str n))))
-                second_half (take-last middle (seq (str n)))]
-            (if (= first_half second_half)
-              true
-              false))))
+(use '[clojure.string :as clstr :only [reverse]])
 
-(defn palindromes_up_to [n]
-  (loop [current_num n
-        palindromes #{} ]
-    (if (not= current_num 0)
-      (if (num_palindrome? current_num)
-        (recur (dec current_num)
-               (conj palindromes current_num))
-        (recur (dec current_num)
-               palindromes))
-      palindromes)))
+;; what the hell was I doing before?
+(defn num-palindrome?
+  "Input must be a positive integer"
+  [n]
+  (let [as-str (str n)]
+    (= as-str (clstr/reverse as-str))))
+
+;; (num-palindrome? 44144) ;; true
+;; (num-palindrome? 920) ;; false
+;; (num-palindrome? 1) ;; true
 
 
+;; strategy is just to multiply numbers together,
+;; instead of factoring
 
-(num_palindrome? 9999999)
-(def pali_array (sort > (palindromes_up_to 998001)))
+;; if inner loop returns true, then outer loop returns true
+(defn problem-4 []
+  (loop [outer 999
+         inner 999
+         palindromes '()]
+    (if (= outer 100)
+      palindromes
+      (recur (dec outer)
+             (dec outer)
+             (conj palindromes
+               (loop [inner inner]
+                 (cond (num-palindrome? (* outer inner))
+                         (* outer inner)
+                       (< inner 100)
+                         false
+                       :else
+                         (recur (dec inner)))))))))
 
-;; Okay, I have a list of all the palindromes up to 998001,
-;; I just need to determine if a palindrome has a factor which is a 3 digit number
+;; (problem-4)
+(reduce max (filter (complement false?) (problem-4)))
 
-(defn find_divisors [n]
-  )
+;; test if the inner loop works
+;; (defn funct [outer]
+;;   (loop [inner 999]
+;;     (cond (num-palindrome? (* outer inner))
+;;             [outer inner]
+;;           (< inner 100)
+;;             false
+;;           :else
+;;             (recur (dec inner)))))
 
-(defn factor? [num1 num2]
-  (= 0 (rem num1 num2)))
+;; (funct 993)
 
-(factor? 999 3)
-
-
-;;;;;;;;;;;;;; MISC
-(str 91)
-
-(count "91")
-(take 2 '(1 2 4))
-
-
-(reverse (take (/ (count (str 11223344332211)) 2) (seq (str 11223344332211))))
-(take-last (/ (count (str 11223344332211)) 2) (seq (str 11223344332211)))
-
-(= '(\4 \3) '(\3 \4))
-
-(int (Math/floor 2.5))
+;; (apply * [993 913])
