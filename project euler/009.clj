@@ -2,13 +2,28 @@
 ;; a < b < c
 ;; Find the product abc.
 
-;; 1000 - b - c = a, and a is less than 334,
-;;
-;; c^2 - b^2 is also a perfect square,
-;; (sqrt c^2 - b^2) is less than 1000
+;; i love you list comprehension, but this is soooo slow
 
+(for [a (range 1 334)
+      b (range 1 1000)
+      c (range 1 1000)
+      :when (and (< a b c)
+                 (= 1000 (+ a b c))
+                 (= (* c c) (+ (* a a) (* b b))))]
+  [a b c])
 
+;; => ([200 375 425])
 
-(* 32 32)
-; => 1024
-(* 31  31)
+(* 200 375 425)
+
+;; so much better
+
+(for [a (range 3 334)
+      b (range 1 1000)
+      :let [c (- 1000 a b)]
+      :when (and (< a b c)
+                 (= 1000 (+ a b c))
+                 (= (* c c) (+ (* a a) (* b b))))]
+  [a b c])
+
+;; even better is to get a partial algebraic solution as suggested on forums
